@@ -58,11 +58,15 @@ Companies often lose track of equipment when handing out laptops and accessories
 
 \### Requirements
 
+
+
 \- \[.NET 8 SDK](https://dotnet.microsoft.com/download/dotnet/8.0)
 
 
 
 \### Steps
+
+
 
 1\. Clone the project:
 
