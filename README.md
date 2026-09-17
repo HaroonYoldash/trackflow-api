@@ -2,7 +2,7 @@
 
 
 
-A full-stack web app I built to help small IT teams keep track of office hardware (like laptops and monitors) and see who currently has them checked out.
+A full-stack web app I built to help small IT teams keep track of office hardware such as laptops and monitors, and see who currently has them checked out.
 
 
 
@@ -10,7 +10,7 @@ A full-stack web app I built to help small IT teams keep track of office hardwar
 
 
 
-Companies often lose track of equipment when handing out laptops and accessories to employees. I wanted to build a practical tool that stores inventory, handles lending/returning equipment, and stops common human errors (like giving the same laptop to two people at once).
+Companies can lose track of equipment when giving laptops and accessories to employees. I wanted to build a practical tool that stores inventory, handles lending and returning equipment, and prevents common mistakes such as assigning the same laptop to two people at the same time.
 
 
 
@@ -18,21 +18,19 @@ Companies often lose track of equipment when handing out laptops and accessories
 
 
 
-\- \*\*Full Inventory Tracking:\*\* Add, edit, view, and remove devices with their serial numbers and purchase costs.
+\* \*\*Inventory Tracking:\*\* Add, edit, view, and remove devices with their serial numbers and purchase costs.
 
-\- \*\*Assignment System:\*\* Assign items to staff members or return them to available inventory.
+\* \*\*Assignment System:\*\* Assign items to staff members or return them to available inventory.
 
-\- \*\*Safety Checks:\*\*
+\* \*\*Validation:\*\* Checks input data, such as positive costs and required names.
 
-&#x20; - Prevents assigning an item that someone is already using (returns a 409 Conflict).
+\* \*\*Conflict Prevention:\*\* Prevents an item that is already assigned from being assigned again.
 
-&#x20; - Validates all input data (e.g. costs must be positive numbers, names cannot be blank).
+\* \*\*Persistent Storage:\*\* Uses SQLite so data stays saved after restarting the application.
 
-\- \*\*Persistent Storage:\*\* Uses SQLite so data remains saved even after restarting the app.
+\* \*\*Web Dashboard:\*\* A simple frontend using HTML, CSS, and JavaScript.
 
-\- \*\*Web Interface:\*\* A lightweight frontend dashboard using plain HTML, CSS, and JavaScript so anyone can test the system in their browser.
-
-\- \*\*Unit Tests:\*\* Automated tests using xUnit to make sure database queries and edge cases work properly.
+\* \*\*Unit Tests:\*\* Uses xUnit tests to check the main functionality and edge cases.
 
 
 
@@ -40,15 +38,15 @@ Companies often lose track of equipment when handing out laptops and accessories
 
 
 
-\- \*\*Backend:\*\* C# (.NET 8), ASP.NET Core Web API
+\* \*\*Backend:\*\* C# (.NET 8), ASP.NET Core Web API
 
-\- \*\*Database:\*\* Entity Framework Core with SQLite
+\* \*\*Database:\*\* Entity Framework Core with SQLite
 
-\- \*\*Testing:\*\* xUnit (using in-memory database instances for test isolation)
+\* \*\*Testing:\*\* xUnit
 
-\- \*\*Frontend:\*\* HTML, CSS, JavaScript (Fetch API)
+\* \*\*Frontend:\*\* HTML, CSS, JavaScript
 
-\- \*\*API Testing:\*\* Swagger UI
+\* \*\*API Testing:\*\* Swagger UI
 
 
 
@@ -60,7 +58,7 @@ Companies often lose track of equipment when handing out laptops and accessories
 
 
 
-\- \[.NET 8 SDK](https://dotnet.microsoft.com/download/dotnet/8.0)
+\* \[.NET 8 SDK](https://dotnet.microsoft.com/download/dotnet/8.0)
 
 
 
@@ -70,9 +68,111 @@ Companies often lose track of equipment when handing out laptops and accessories
 
 1\. Clone the project:
 
-&#x20;  ```bash
 
-&#x20;  git clone \[https://github.com/HaroonYoldash/trackflow-api.git](https://github.com/HaroonYoldash/trackflow-api.git)
 
-&#x20;  cd trackflow-api/TrackFlow.Api
+```bash
+
+git clone https://github.com/HaroonYoldash/trackflow-api.git
+
+```
+
+
+
+2\. Open the project folder:
+
+
+
+```bash
+
+cd trackflow-api/TrackFlow.Api
+
+```
+
+
+
+3\. Run the application:
+
+
+
+```bash
+
+dotnet run
+
+```
+
+
+
+4\. Open the URL shown in the terminal.
+
+
+
+\### Run the Tests
+
+
+
+From the main project folder, run:
+
+
+
+```bash
+
+dotnet test
+
+```
+
+
+
+\## Project Structure
+
+
+
+```text
+
+TrackFlow.Api/
+
+├── Controllers/
+
+├── Data/
+
+├── DTOs/
+
+├── Models/
+
+├── wwwroot/
+
+└── Program.cs
+
+
+
+tests/
+
+└── TrackFlow.Tests/
+
+```
+
+
+
+\## Features
+
+
+
+\* Manage hardware assets
+
+\* Assign assets to staff
+
+\* Return assigned assets
+
+\* SQLite database
+
+\* Input validation
+
+\* REST API
+
+\* Swagger documentation
+
+\* Web dashboard
+
+\* Automated xUnit tests
+
+
 
