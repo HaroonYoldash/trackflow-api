@@ -1,0 +1,190 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>TrackFlow - Asset Portal</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background: #f4f6f8;
+            margin: 40px;
+            color: #222;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: auto;
+            background: white;
+            padding: 24px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        }
+
+        h1 {
+            margin-top: 0;
+            color: #111;
+        }
+
+        .form-row {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        input, button {
+            padding: 10px;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+            font-size: 14px;
+        }
+
+        input {
+            flex: 1;
+        }
+
+        button {
+            background: #0066cc;
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+            button:hover {
+                background: #004d99;
+            }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+
+        th, td {
+            padding: 12px;
+            border-bottom: 1px solid #eee;
+            text-align: left;
+        }
+
+        th {
+            background: #fafafa;
+            font-size: 13px;
+            color: #666;
+        }
+
+        .status-badge {
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .available {
+            background: #e6f4ea;
+            color: #137333;
+        }
+
+        .assigned {
+            background: #fce8e6;
+            color: #c5221f;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Hardware Inventory Portal</h1>
+        <p>Live Asset Tracking & Employee Allocation Dashboard</p>
+
+        <div class="form-row">
+            <input type="text" id="name" placeholder="Device Name (e.g. ThinkPad X1)" />
+            <input type="text" id="serial" placeholder="Serial (e.g. SN-4012)" />
+            <input type="text" id="category" placeholder="Category (e.g. Laptop)" />
+            <input type="number" id="cost" placeholder="Cost (£)" />
+            <button onclick="createAsset()">Add Device</button>
+        </div>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Device Name</th>
+                    <th>Serial</th>
+                    <th>Cost</th>
+                    <th>Status</th>
+                    <th>Assigned To</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody id="assetsTable"></tbody>
+        </table>
+    </div>
+
+    <script>
+    async function loadAssets() {
+      const res = await fetch('/api/assets');
+      const data = await res.json();
+      const tbody = document.getElementById('assetsTable');
+      tbody.innerHTML = '';
+
+      data.forEach(item => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td>${item.id}</td>
+          <td><strong>${item.name}</strong></td>
+          <td>${item.serialNumber}</td>
+          <td>£${item.purchaseCost}</td>
+          <td>
+            <span class="status-badge ${item.isAssigned ? 'assigned' : 'available'}">
+              ${item.isAssigned ? 'Assigned' : 'Available'}
+            </span>
+          </td>
+          <td>${item.assignedTo || '—'}</td>
+          <td>
+            ${item.isAssigned
+              ? `<button style="background:#dc3545" onclick="returnAsset(${item.id})">Return</button>`
+              : `<button onclick="assignAsset(${item.id})">Assign</button>`}
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    async function createAsset() {
+      const name = document.getElementById('name').value;
+      const serialNumber = document.getElementById('serial').value;
+      const category = document.getElementById('category').value;
+      const purchaseCost = parseFloat(document.getElementById('cost').value);
+
+      await fetch('/api/assets', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, serialNumber, category, purchaseCost, isAssigned: false, assignedTo: null })
+      });
+
+      document.getElementById('name').value = '';
+      document.getElementById('serial').value = '';
+      document.getElementById('category').value = '';
+      document.getElementById('cost').value = '';
+      loadAssets();
+    }
+
+    async function assignAsset(id) {
+      const user = prompt("Assign to employee name:");
+      if (!user) return;
+      await fetch(`/api/assets/${id}/assign`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ assignedTo: user })
+      });
+      loadAssets();
+    }
+
+    async function returnAsset(id) {
+      await fetch(`/api/assets/${id}/return`, { method: 'POST' });
+      loadAssets();
+    }
+
+    loadAssets();
+    </script>
+</body>
+</html>

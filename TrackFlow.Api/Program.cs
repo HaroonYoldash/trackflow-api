@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using TrackFlow.Api.Data;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -7,8 +8,8 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddDbContext<TrackFlow.Api.Data.AppDbContext>(options =>
-    options.UseInMemoryDatabase("TrackFlowDb"));
+builder.Services.AddDbContext<AppDbContext>(options =>
+    options.UseSqlite("Data Source=trackflow.db"));
 
 var app = builder.Build();
 
@@ -20,7 +21,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
+app.UseDefaultFiles();
+app.UseStaticFiles();
 app.UseAuthorization();
 
 app.MapControllers();
