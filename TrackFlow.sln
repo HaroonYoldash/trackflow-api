@@ -1,0 +1,33 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.12.35527.113 d17.12
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TrackFlow.Api", "TrackFlow.Api\TrackFlow.Api.csproj", "{306846C7-2ADE-4F22-8A5D-C4F2FC01BD5F}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{C2E53D46-8CC7-4219-A8AE-044ACD5C4812}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TrackFlow.Tests", "tests\TrackFlow.Tests\TrackFlow.Tests.csproj", "{CAE83F7D-F940-41FF-AD8A-57AE06C41820}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{306846C7-2ADE-4F22-8A5D-C4F2FC01BD5F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{306846C7-2ADE-4F22-8A5D-C4F2FC01BD5F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{306846C7-2ADE-4F22-8A5D-C4F2FC01BD5F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{306846C7-2ADE-4F22-8A5D-C4F2FC01BD5F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CAE83F7D-F940-41FF-AD8A-57AE06C41820}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CAE83F7D-F940-41FF-AD8A-57AE06C41820}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CAE83F7D-F940-41FF-AD8A-57AE06C41820}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CAE83F7D-F940-41FF-AD8A-57AE06C41820}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{CAE83F7D-F940-41FF-AD8A-57AE06C41820} = {C2E53D46-8CC7-4219-A8AE-044ACD5C4812}
+	EndGlobalSection
+EndGlobal
