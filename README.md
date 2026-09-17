@@ -2,44 +2,59 @@
 
 ![.NET CI](https://github.com/HaroonYoldash/trackflow-api/actions/workflows/dotnet.yml/badge.svg)
 
-A full-stack web app I built to help small IT teams keep track of office hardware such as laptops and monitors, and see who currently has them checked out.
+A full-stack web app built to help small IT teams track workplace hardware such as laptops, monitors, and accessories. It also tracks asset assignments, returns, and audit history.
 
 ## Preview
 
-![TrackFlow Dashboard](TrackFlow.Api/docs/dashboard.png)
+![TrackFlow Dashboard](docs/dashboard.png)
 
 ## Why I Built This
 
-Companies can lose track of equipment when giving laptops and accessories to employees. I wanted to build a practical tool that stores inventory, handles lending and returning equipment, and prevents common mistakes such as assigning the same laptop to two people at the same time.
+Companies can lose track of equipment when hardware is given to employees. Spreadsheets can make it difficult to validate assignments and keep track of who currently has each item.
+
+I built TrackFlow to provide one place to manage assets, assign equipment to staff, prevent duplicate checkouts, and keep a history of asset activity.
 
 ## What It Does
 
-* **Inventory Tracking:** Add, edit, view, and remove devices with their serial numbers and purchase costs.
-* **Assignment System:** Assign items to staff members or return them to available inventory.
-* **Validation:** Checks input data, such as positive costs and required names.
-* **Conflict Prevention:** Prevents an item that is already assigned from being assigned again.
-* **Persistent Storage:** Uses SQLite so data stays saved after restarting the application.
-* **Web Dashboard:** A simple frontend using HTML, CSS, and JavaScript.
-* **Unit Tests:** Uses xUnit tests to check the main functionality and edge cases.
+* **Inventory Tracking:** Add, view, and manage assets with serial numbers, categories, and purchase costs.
+* **Asset Assignment:** Assign assets to staff members and return them to available stock.
+* **Audit History:** Records asset events such as creation, assignment, and return, including timestamps and the user responsible.
+* **Conflict Prevention:** Prevents an asset that is already assigned from being assigned again.
+* **Validation:** Checks required fields and purchase costs before saving data.
+* **Fleet Dashboard:** Shows total assets, assigned assets, available assets, and total fleet value.
+* **Persistent Storage:** Uses Entity Framework Core with SQLite to store application data.
+* **Responsive Dashboard:** Provides a simple web interface with asset search and management features.
+* **Automated Tests:** Includes xUnit tests covering the main functionality and edge cases.
 
 ## Tech Stack
 
 * **Backend:** C# (.NET 8), ASP.NET Core Web API
-* **Database:** Entity Framework Core with SQLite
+* **Database & ORM:** Entity Framework Core with SQLite
 * **Testing:** xUnit
-* **Frontend:** HTML, CSS, JavaScript
-* **API Testing:** Swagger UI
-* **CI:** GitHub Actions
+* **Frontend:** HTML5, CSS3, JavaScript
+* **API Documentation:** Swagger UI
+* **CI/CD:** GitHub Actions
 
-## How to Run It Locally
+## API Endpoints
 
-### Requirements
+| Method | Endpoint                   | Description                        |
+| ------ | -------------------------- | ---------------------------------- |
+| `GET`  | `/api/assets`              | Get all assets                     |
+| `GET`  | `/api/assets/{id}`         | Get a specific asset               |
+| `GET`  | `/api/assets/{id}/history` | Get the audit history for an asset |
+| `POST` | `/api/assets`              | Create a new asset                 |
+| `POST` | `/api/assets/{id}/assign`  | Assign an asset to a staff member  |
+| `POST` | `/api/assets/{id}/return`  | Return an assigned asset           |
+
+## How to Run Locally
+
+### Prerequisites
 
 * [.NET 8 SDK](https://dotnet.microsoft.com/download/dotnet/8.0)
 
 ### Steps
 
-1. Clone the project:
+1. Clone the repository:
 
 ```bash
 git clone https://github.com/HaroonYoldash/trackflow-api.git
@@ -70,28 +85,33 @@ dotnet test
 ## Project Structure
 
 ```text
-TrackFlow.Api/
-├── Controllers/
-├── Data/
-├── DTOs/
-├── Models/
-├── wwwroot/
-└── Program.cs
-
-tests/
-└── TrackFlow.Tests/
+TrackFlow/
+├── .github/
+│   └── workflows/
+│       └── dotnet.yml              # CI build and test pipeline
+├── docs/
+│   └── dashboard.png               # Dashboard preview
+├── tests/
+│   └── TrackFlow.Tests/            # xUnit tests
+├── TrackFlow.Api/
+│   ├── Controllers/                # REST API controllers
+│   ├── Data/                       # DbContext and database seeder
+│   ├── DTOs/                       # Request and response objects
+│   ├── Models/                     # Asset and audit history models
+│   ├── wwwroot/                    # Dashboard HTML, CSS and JavaScript
+│   └── Program.cs                  # Application configuration
+└── TrackFlow.sln                   # Solution file
 ```
 
 ## Features
 
-* Manage hardware assets
-* Assign assets to staff
-* Return assigned assets
+* Asset management
+* Asset assignment and returns
+* Audit history
 * SQLite database
-* Database seeding
 * Input validation
 * REST API
 * Swagger documentation
-* Web dashboard
-* Automated xUnit tests
+* Responsive web dashboard
+* xUnit tests
 * GitHub Actions CI
