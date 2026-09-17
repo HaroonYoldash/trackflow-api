@@ -22,7 +22,7 @@ Companies often lose track of equipment when handing out laptops and accessories
 
 \- \*\*Assignment System:\*\* Assign items to staff members or return them to available inventory.
 
-\- \*\*Safety Checks:\*\* 
+\- \*\*Safety Checks:\*\*
 
 &#x20; - Prevents assigning an item that someone is already using (returns a 409 Conflict).
 
