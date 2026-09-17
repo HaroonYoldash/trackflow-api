@@ -1,6 +1,8 @@
 \# TrackFlow - Hardware Asset Tracker
 
+![.NET CI](https://github.com/HaroonYoldash/trackflow-api/actions/workflows/dotnet.yml/badge.svg)
 
+A full-stack web app I built to help small IT teams keep track of office hardware...
 
 A full-stack web app I built to help small IT teams keep track of office hardware such as laptops and monitors, and see who currently has them checked out.
 
