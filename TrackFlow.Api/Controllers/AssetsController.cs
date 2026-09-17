@@ -17,26 +17,24 @@ public class AssetsController : ControllerBase
         _context = context;
     }
 
-    // GET: api/assets
     [HttpGet]
     public async Task<ActionResult<IEnumerable<Asset>>> GetAll()
     {
-        return Ok(await _context.Assets.ToListAsync());
+        return Ok(await _context.Assets.AsNoTracking().ToListAsync());
     }
 
-    // GET: api/assets/1
     [HttpGet("{id}")]
     public async Task<ActionResult<Asset>> GetById(int id)
     {
         var asset = await _context.Assets.FindAsync(id);
         if (asset == null)
         {
-            return NotFound($"Asset with ID {id} was not found.");
+            return NotFound($"Asset with ID {id} not found.");
         }
+
         return Ok(asset);
     }
 
-    // POST: api/assets
     [HttpPost]
     public async Task<ActionResult<Asset>> Create([FromBody] CreateAssetDto dto)
     {
@@ -56,14 +54,13 @@ public class AssetsController : ControllerBase
         return CreatedAtAction(nameof(GetById), new { id = asset.Id }, asset);
     }
 
-    // PUT: api/assets/1
     [HttpPut("{id}")]
     public async Task<IActionResult> Update(int id, [FromBody] UpdateAssetDto dto)
     {
         var existingAsset = await _context.Assets.FindAsync(id);
         if (existingAsset == null)
         {
-            return NotFound($"Asset with ID {id} was not found.");
+            return NotFound($"Asset with ID {id} not found.");
         }
 
         existingAsset.Name = dto.Name;
@@ -77,18 +74,59 @@ public class AssetsController : ControllerBase
         return NoContent();
     }
 
-    // DELETE: api/assets/1
     [HttpDelete("{id}")]
     public async Task<IActionResult> Delete(int id)
     {
         var asset = await _context.Assets.FindAsync(id);
         if (asset == null)
         {
-            return NotFound($"Asset with ID {id} was not found.");
+            return NotFound($"Asset with ID {id} not found.");
         }
 
         _context.Assets.Remove(asset);
         await _context.SaveChangesAsync();
         return NoContent();
+    }
+
+    [HttpPost("{id}/assign")]
+    public async Task<IActionResult> Assign(int id, [FromBody] AssignAssetDto dto)
+    {
+        var asset = await _context.Assets.FindAsync(id);
+        if (asset == null)
+        {
+            return NotFound($"Asset with ID {id} not found.");
+        }
+
+        if (asset.IsAssigned)
+        {
+            return Conflict($"Asset is already assigned to {asset.AssignedTo}.");
+        }
+
+        asset.IsAssigned = true;
+        asset.AssignedTo = dto.AssignedTo;
+
+        await _context.SaveChangesAsync();
+        return Ok(asset);
+    }
+
+    [HttpPost("{id}/return")]
+    public async Task<IActionResult> Return(int id)
+    {
+        var asset = await _context.Assets.FindAsync(id);
+        if (asset == null)
+        {
+            return NotFound($"Asset with ID {id} not found.");
+        }
+
+        if (!asset.IsAssigned)
+        {
+            return BadRequest("Asset is not currently assigned.");
+        }
+
+        asset.IsAssigned = false;
+        asset.AssignedTo = null;
+
+        await _context.SaveChangesAsync();
+        return Ok(asset);
     }
 }

@@ -1,7 +1,12 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
 namespace TrackFlow.Api.DTOs;
-
+public class AssignAssetDto
+{
+    [Required(ErrorMessage = "Employee name or email is required.")]
+    [StringLength(100, MinimumLength = 2, ErrorMessage = "Assignee name must be between 2 and 100 characters.")]
+    public string AssignedTo { get; set; } = string.Empty;
+}
 public class CreateAssetDto
 {
     [Required(ErrorMessage = "Asset name is required.")]

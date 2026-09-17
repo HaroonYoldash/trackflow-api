@@ -55,4 +55,54 @@ public class AssetsControllerTests
         Assert.Equal("Dell Monitor 24", returnedAsset.Name);
         Assert.Equal(1, await context.Assets.CountAsync());
     }
+
+    [Fact]
+    public async Task Assign_WhenAlreadyAssigned_ReturnsConflict()
+    {
+        var context = CreateDbContext();
+        var asset = new Asset
+        {
+            Name = "MacBook Pro",
+            SerialNumber = "MB-001",
+            Category = "Laptop",
+            PurchaseCost = 2000m,
+            IsAssigned = true,
+            AssignedTo = "John Doe"
+        };
+        context.Assets.Add(asset);
+        await context.SaveChangesAsync();
+
+        var controller = new AssetsController(context);
+        var dto = new AssignAssetDto { AssignedTo = "Jane Smith" };
+
+        var result = await controller.Assign(asset.Id, dto);
+
+        Assert.IsType<ConflictObjectResult>(result);
+    }
+
+    [Fact]
+    public async Task Return_WhenAssigned_ClearsAssignment()
+    {
+        var context = CreateDbContext();
+        var asset = new Asset
+        {
+            Name = "Monitor 4K",
+            SerialNumber = "MN-550",
+            Category = "Monitor",
+            PurchaseCost = 400m,
+            IsAssigned = true,
+            AssignedTo = "John Doe"
+        };
+        context.Assets.Add(asset);
+        await context.SaveChangesAsync();
+
+        var controller = new AssetsController(context);
+
+        var result = await controller.Return(asset.Id);
+
+        var okResult = Assert.IsType<OkObjectResult>(result);
+        var updated = Assert.IsType<Asset>(okResult.Value);
+        Assert.False(updated.IsAssigned);
+        Assert.Null(updated.AssignedTo);
+    }
 }
