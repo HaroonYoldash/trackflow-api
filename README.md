@@ -4,6 +4,10 @@
 
 A full-stack web app I built to help small IT teams keep track of office hardware such as laptops and monitors, and see who currently has them checked out.
 
+## Preview
+
+![TrackFlow Dashboard](TrackFlow.Api/docs/dashboard.png)
+
 ## Why I Built This
 
 Companies can lose track of equipment when giving laptops and accessories to employees. I wanted to build a practical tool that stores inventory, handles lending and returning equipment, and prevents common mistakes such as assigning the same laptop to two people at the same time.
