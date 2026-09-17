@@ -6,7 +6,7 @@ A full-stack web app built to help small IT teams track workplace hardware such 
 
 ## Preview
 
-![TrackFlow Dashboard](docs/dashboard.png)
+![TrackFlow Dashboard](TrackFlow.Api/docs/dashboard.png)
 
 ## Why I Built This
 

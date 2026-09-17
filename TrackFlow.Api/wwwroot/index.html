@@ -87,10 +87,16 @@
 
         .form-card {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)) auto;
-            gap: 10px;
+            grid-template-columns: 2fr 1.5fr 1.2fr 1fr auto;
+            gap: 12px;
+            align-items: center;
             margin-bottom: 25px;
         }
+
+            .form-card button {
+                white-space: nowrap;
+                height: 100%;
+            }
 
         input {
             padding: 10px 14px;
@@ -190,7 +196,6 @@
             gap: 6px;
         }
 
-        /* Modal Styling */
         .modal-overlay {
             display: none;
             position: fixed;
@@ -296,7 +301,7 @@
         </div>
     </div>
 
-    <!-- History Modal -->
+
     <div class="modal-overlay" id="historyModal">
         <div class="modal">
             <div class="modal-header">
@@ -324,14 +329,12 @@
                 (a.assignedTo && a.assignedTo.toLowerCase().includes(q))
             );
 
-            // Metrics
             document.getElementById('m-total').innerText = assets.length;
             document.getElementById('m-assigned').innerText = assets.filter(a => a.isAssigned).length;
             document.getElementById('m-avail').innerText = assets.filter(a => !a.isAssigned).length;
             const totalCost = assets.reduce((sum, a) => sum + a.purchaseCost, 0);
             document.getElementById('m-cost').innerText = `£${totalCost.toLocaleString('en-GB', { minimumFractionDigits: 2 })}`;
 
-            // Table rows
             const tbody = document.getElementById('assetRows');
             tbody.innerHTML = filtered.map(a => `
             <tr>

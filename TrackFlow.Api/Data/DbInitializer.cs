@@ -6,7 +6,6 @@ public static class DbInitializer
 {
     public static void Initialize(AppDbContext context)
     {
-        // Creates the database file and all tables (Assets, AssetHistories) if missing
         context.Database.EnsureCreated();
 
         if (context.Assets.Any())
