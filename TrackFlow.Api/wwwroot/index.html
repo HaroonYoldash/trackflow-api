@@ -1,40 +1,33 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TrackFlow - Asset Operations</title>
+    <meta charset="UTF-8" />
+    <title>TrackFlow Operations</title>
     <style>
         :root {
             --bg: #f8fafc;
             --card-bg: #ffffff;
-            --border: #e2e8f0;
-            --text-main: #0f172a;
-            --text-muted: #64748b;
             --primary: #2563eb;
-            --primary-hover: #1d4ed8;
-            --danger: #ef4444;
-            --danger-hover: #dc2626;
-            --success-bg: #dcfce7;
-            --success-text: #166534;
-            --warning-bg: #fee2e2;
-            --warning-text: #991b1b;
-        }
-
-        * {
-            box-sizing: border-box;
+            --danger: #dc2626;
+            --text: #0f172a;
+            --muted: #64748b;
+            --border: #e2e8f0;
+            --badge-green-bg: #dcfce7;
+            --badge-green-text: #166534;
+            --badge-red-bg: #fee2e2;
+            --badge-red-text: #991b1b;
         }
 
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-            background-color: var(--bg);
-            color: var(--text-main);
+            background: var(--bg);
+            color: var(--text);
             margin: 0;
-            padding: 32px 16px;
+            padding: 40px 20px;
         }
 
         .container {
-            max-width: 1080px;
+            max-width: 1100px;
             margin: 0 auto;
         }
 
@@ -42,72 +35,68 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 24px;
+            margin-bottom: 25px;
         }
 
         h1 {
-            font-size: 24px;
-            margin: 0;
+            margin: 0 0 5px 0;
+            font-size: 1.8rem;
             font-weight: 700;
         }
 
-        .subtitle {
-            color: var(--text-muted);
-            font-size: 14px;
-            margin-top: 4px;
+        p.subtitle {
+            margin: 0;
+            color: var(--muted);
+            font-size: 0.95rem;
         }
 
-        .metrics-grid {
+        a.api-link {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .metrics {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 16px;
-            margin-bottom: 24px;
-        }
-
-        .metric-card {
-            background: var(--card-bg);
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            padding: 16px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.04);
-        }
-
-        .metric-title {
-            font-size: 12px;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            color: var(--text-muted);
-            font-weight: 600;
-        }
-
-        .metric-value {
-            font-size: 24px;
-            font-weight: 700;
-            margin-top: 8px;
+            gap: 15px;
+            margin-bottom: 25px;
         }
 
         .card {
             background: var(--card-bg);
             border: 1px solid var(--border);
             border-radius: 8px;
-            padding: 24px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.04);
-            margin-bottom: 24px;
+            padding: 20px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.02);
         }
 
-        .form-grid {
+            .card .label {
+                font-size: 0.75rem;
+                font-weight: 600;
+                color: var(--muted);
+                letter-spacing: 0.05em;
+                text-transform: uppercase;
+                margin-bottom: 8px;
+            }
+
+            .card .value {
+                font-size: 1.6rem;
+                font-weight: 700;
+            }
+
+        .form-card {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)) 120px;
-            gap: 12px;
-            margin-bottom: 16px;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)) auto;
+            gap: 10px;
+            margin-bottom: 25px;
         }
 
         input {
-            width: 100%;
-            padding: 9px 12px;
+            padding: 10px 14px;
             border: 1px solid var(--border);
             border-radius: 6px;
-            font-size: 14px;
+            font-size: 0.9rem;
             outline: none;
         }
 
@@ -116,92 +105,150 @@
             }
 
         button {
-            padding: 9px 16px;
-            border-radius: 6px;
-            font-size: 13px;
-            font-weight: 600;
-            border: none;
             cursor: pointer;
+            font-weight: 600;
+            border-radius: 6px;
+            border: none;
+            padding: 10px 18px;
+            font-size: 0.9rem;
+            transition: opacity 0.15s;
         }
+
+            button:hover {
+                opacity: 0.9;
+            }
 
         .btn-primary {
             background: var(--primary);
-            color: white;
+            color: #fff;
         }
 
-            .btn-primary:hover {
-                background: var(--primary-hover);
-            }
-
-        .btn-return {
+        .btn-danger {
             background: var(--danger);
-            color: white;
+            color: #fff;
         }
 
-            .btn-return:hover {
-                background: var(--danger-hover);
-            }
-
-        .btn-assign {
+        .btn-secondary {
             background: #e2e8f0;
-            color: #1e293b;
+            color: #334155;
         }
 
-            .btn-assign:hover {
-                background: #cbd5e1;
-            }
-
-        .controls {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 16px;
-            gap: 16px;
+        .table-container {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.02);
         }
 
-        .search-input {
+        .search-bar {
+            width: 100%;
             max-width: 320px;
+            margin-bottom: 20px;
         }
 
         table {
             width: 100%;
             border-collapse: collapse;
-            font-size: 14px;
+            text-align: left;
         }
 
         th {
-            text-align: left;
-            padding: 12px;
-            background: #f8fafc;
-            color: var(--text-muted);
+            font-size: 0.8rem;
+            color: var(--muted);
             font-weight: 600;
-            font-size: 12px;
+            padding: 12px 10px;
             border-bottom: 1px solid var(--border);
         }
 
         td {
-            padding: 12px;
-            border-bottom: 1px solid var(--border);
-            vertical-align: middle;
+            padding: 14px 10px;
+            border-bottom: 1px solid #f1f5f9;
+            font-size: 0.9rem;
         }
 
         .badge {
             display: inline-block;
             padding: 4px 8px;
-            border-radius: 9999px;
-            font-size: 12px;
+            border-radius: 12px;
+            font-size: 0.75rem;
             font-weight: 600;
         }
 
         .badge-available {
-            background: var(--success-bg);
-            color: var(--success-text);
+            background: var(--badge-green-bg);
+            color: var(--badge-green-text);
         }
 
         .badge-assigned {
-            background: var(--warning-bg);
-            color: var(--warning-text);
+            background: var(--badge-red-bg);
+            color: var(--badge-red-text);
         }
+
+        .action-btn-group {
+            display: flex;
+            gap: 6px;
+        }
+
+        /* Modal Styling */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(15, 23, 42, 0.5);
+            align-items: center;
+            justify-content: center;
+            z-index: 100;
+        }
+
+            .modal-overlay.active {
+                display: flex;
+            }
+
+        .modal {
+            background: #fff;
+            border-radius: 10px;
+            width: 90%;
+            max-width: 550px;
+            padding: 25px;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+            .modal-header h3 {
+                margin: 0;
+                font-size: 1.2rem;
+            }
+
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--muted);
+        }
+
+        .timeline {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+            .timeline li {
+                padding: 10px 0;
+                border-bottom: 1px solid var(--border);
+                display: flex;
+                justify-content: space-between;
+                font-size: 0.85rem;
+            }
     </style>
 </head>
 <body>
@@ -209,47 +256,28 @@
         <header>
             <div>
                 <h1>TrackFlow Operations</h1>
-                <div class="subtitle">Enterprise Hardware Inventory & Allocation Management</div>
+                <p class="subtitle">Enterprise Hardware Inventory & Allocation Management</p>
             </div>
-            <div>
-                <a href="/swagger" target="_blank" style="font-size: 13px; color: var(--primary); text-decoration: none; font-weight: 600;">Swagger API Docs &rarr;</a>
-            </div>
+            <a href="/swagger" target="_blank" class="api-link">Swagger API Docs &rarr;</a>
         </header>
 
-        <div class="metrics-grid">
-            <div class="metric-card">
-                <div class="metric-title">Total Fleet</div>
-                <div class="metric-value" id="statTotal">0</div>
-            </div>
-            <div class="metric-card">
-                <div class="metric-title">Assigned Items</div>
-                <div class="metric-value" id="statAssigned">0</div>
-            </div>
-            <div class="metric-card">
-                <div class="metric-title">Available Stock</div>
-                <div class="metric-value" id="statAvailable">0</div>
-            </div>
-            <div class="metric-card">
-                <div class="metric-title">Fleet Value</div>
-                <div class="metric-value" id="statValue">£0</div>
-            </div>
+        <div class="metrics">
+            <div class="card"><div class="label">Total Fleet</div><div class="value" id="m-total">0</div></div>
+            <div class="card"><div class="label">Assigned Items</div><div class="value" id="m-assigned">0</div></div>
+            <div class="card"><div class="label">Available Stock</div><div class="value" id="m-avail">0</div></div>
+            <div class="card"><div class="label">Fleet Value</div><div class="value" id="m-cost">£0.00</div></div>
         </div>
 
-        <div class="card">
-            <div class="form-grid">
-                <input type="text" id="name" placeholder="Device Name (e.g. Dell XPS 15)" required />
-                <input type="text" id="serial" placeholder="Serial (e.g. SN-8921)" required />
-                <input type="text" id="category" placeholder="Category (e.g. Laptop)" required />
-                <input type="number" id="cost" placeholder="Cost (£)" step="0.01" required />
-                <button class="btn-primary" onclick="createAsset()">Add Item</button>
-            </div>
-        </div>
+        <form class="card form-card" id="addForm">
+            <input id="name" placeholder="Device Name (e.g. Dell XPS 15)" required />
+            <input id="serial" placeholder="Serial (e.g. SN-8921)" required />
+            <input id="category" placeholder="Category (e.g. Laptop)" required />
+            <input id="cost" type="number" step="0.01" placeholder="Cost (£)" required />
+            <button type="submit" class="btn-primary">Add Item</button>
+        </form>
 
-        <div class="card">
-            <div class="controls">
-                <input type="text" id="search" class="search-input" placeholder="Filter devices or staff..." oninput="filterAssets()" />
-            </div>
-
+        <div class="table-container">
+            <input class="search-bar" id="search" placeholder="Filter devices or staff..." />
             <table>
                 <thead>
                     <tr>
@@ -260,7 +288,7 @@
                         <th>Cost</th>
                         <th>Status</th>
                         <th>Holder</th>
-                        <th style="text-align: right;">Action</th>
+                        <th>Action</th>
                     </tr>
                 </thead>
                 <tbody id="assetRows"></tbody>
@@ -268,122 +296,129 @@
         </div>
     </div>
 
+    <!-- History Modal -->
+    <div class="modal-overlay" id="historyModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 id="modalTitle">Device Audit Trail</h3>
+                <button class="modal-close" onclick="closeModal()">&times;</button>
+            </div>
+            <ul class="timeline" id="historyTimeline"></ul>
+        </div>
+    </div>
+
     <script>
-        let allAssets = [];
+        let assets = [];
 
         async function loadAssets() {
             const res = await fetch('/api/assets');
-            allAssets = await res.json();
-            renderStats(allAssets);
-            renderTable(allAssets);
+            assets = await res.json();
+            render();
         }
 
-        function renderStats(data) {
-            const total = data.length;
-            const assigned = data.filter(x => x.isAssigned).length;
-            const available = total - assigned;
-            const totalCost = data.reduce((sum, x) => sum + (x.purchaseCost || 0), 0);
-
-            document.getElementById('statTotal').innerText = total;
-            document.getElementById('statAssigned').innerText = assigned;
-            document.getElementById('statAvailable').innerText = available;
-            document.getElementById('statValue').innerText = '£' + totalCost.toLocaleString('en-GB', { minimumFractionDigits: 2 });
-        }
-
-        function renderTable(data) {
-            const tbody = document.getElementById('assetRows');
-            tbody.innerHTML = '';
-
-            if (data.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="8" style="text-align: center; color: var(--text-muted); padding: 24px;">No records found.</td></tr>';
-                return;
-            }
-
-            data.forEach(item => {
-                const tr = document.createElement('tr');
-                tr.innerHTML = `
-              <td>#${item.id}</td>
-              <td><strong>${item.name}</strong></td>
-              <td><code>${item.serialNumber}</code></td>
-              <td>${item.category || 'General'}</td>
-              <td>£${item.purchaseCost.toFixed(2)}</td>
-              <td>
-                <span class="badge ${item.isAssigned ? 'badge-assigned' : 'badge-available'}">
-                  ${item.isAssigned ? 'Assigned' : 'Available'}
-                </span>
-              </td>
-              <td>${item.assignedTo || '—'}</td>
-              <td style="text-align: right;">
-                ${item.isAssigned
-                        ? `<button class="btn-return" onclick="returnAsset(${item.id})">Return</button>`
-                        : `<button class="btn-assign" onclick="assignAsset(${item.id})">Assign</button>`}
-              </td>
-            `;
-                tbody.appendChild(tr);
-            });
-        }
-
-        function filterAssets() {
-            const query = document.getElementById('search').value.toLowerCase();
-            const filtered = allAssets.filter(item =>
-                item.name.toLowerCase().includes(query) ||
-                item.serialNumber.toLowerCase().includes(query) ||
-                (item.assignedTo && item.assignedTo.toLowerCase().includes(query)) ||
-                (item.category && item.category.toLowerCase().includes(query))
+        function render() {
+            const q = document.getElementById('search').value.toLowerCase();
+            const filtered = assets.filter(a =>
+                a.name.toLowerCase().includes(q) ||
+                a.serialNumber.toLowerCase().includes(q) ||
+                (a.assignedTo && a.assignedTo.toLowerCase().includes(q))
             );
-            renderTable(filtered);
-        }
 
-        async function createAsset() {
-            const name = document.getElementById('name').value.trim();
-            const serialNumber = document.getElementById('serial').value.trim();
-            const category = document.getElementById('category').value.trim();
-            const purchaseCost = parseFloat(document.getElementById('cost').value);
+            // Metrics
+            document.getElementById('m-total').innerText = assets.length;
+            document.getElementById('m-assigned').innerText = assets.filter(a => a.isAssigned).length;
+            document.getElementById('m-avail').innerText = assets.filter(a => !a.isAssigned).length;
+            const totalCost = assets.reduce((sum, a) => sum + a.purchaseCost, 0);
+            document.getElementById('m-cost').innerText = `£${totalCost.toLocaleString('en-GB', { minimumFractionDigits: 2 })}`;
 
-            if (!name || !serialNumber || isNaN(purchaseCost)) {
-                alert('Please complete all required fields with valid data.');
-                return;
-            }
-
-            const res = await fetch('/api/assets', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ name, serialNumber, category, purchaseCost, isAssigned: false, assignedTo: null })
-            });
-
-            if (!res.ok) {
-                alert('Failed to register device.');
-                return;
-            }
-
-            document.getElementById('name').value = '';
-            document.getElementById('serial').value = '';
-            document.getElementById('category').value = '';
-            document.getElementById('cost').value = '';
-            loadAssets();
+            // Table rows
+            const tbody = document.getElementById('assetRows');
+            tbody.innerHTML = filtered.map(a => `
+            <tr>
+              <td>#${a.id}</td>
+              <td><strong>${a.name}</strong></td>
+              <td>${a.serialNumber}</td>
+              <td>${a.category}</td>
+              <td>£${a.purchaseCost.toFixed(2)}</td>
+              <td><span class="badge ${a.isAssigned ? 'badge-assigned' : 'badge-available'}">${a.isAssigned ? 'Assigned' : 'Available'}</span></td>
+              <td>${a.assignedTo || '-'}</td>
+              <td>
+                <div class="action-btn-group">
+                  ${a.isAssigned
+                    ? `<button class="btn-danger" onclick="returnAsset(${a.id})">Return</button>`
+                    : `<button class="btn-primary" onclick="assignAsset(${a.id})">Assign</button>`
+                }
+                  <button class="btn-secondary" onclick="viewHistory(${a.id})">Audit</button>
+                </div>
+              </td>
+            </tr>
+          `).join('');
         }
 
         async function assignAsset(id) {
-            const user = prompt('Enter employee name to assign:');
-            if (!user || !user.trim()) return;
-
+            const name = prompt("Enter staff member's name:");
+            if (!name) return;
             const res = await fetch(`/api/assets/${id}/assign`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ assignedTo: user.trim() })
+                body: JSON.stringify({ assignedTo: name })
             });
-
-            if (!res.ok) {
-                alert('Error assigning item.');
-                return;
-            }
-            loadAssets();
+            if (res.ok) loadAssets();
+            else alert((await res.text()) || "Error assigning asset");
         }
 
         async function returnAsset(id) {
-            await fetch(`/api/assets/${id}/return`, { method: 'POST' });
-            loadAssets();
+            const res = await fetch(`/api/assets/${id}/return`, { method: 'POST' });
+            if (res.ok) loadAssets();
         }
+
+        async function viewHistory(id) {
+            const asset = assets.find(a => a.id === id);
+            const title = asset ? asset.name : `Asset #${id}`;
+            document.getElementById('modalTitle').innerText = `${title} (Audit Log)`;
+
+            const res = await fetch(`/api/assets/${id}/history`);
+            if (!res.ok) {
+                alert("Could not load history");
+                return;
+            }
+            const logs = await res.json();
+
+            const timeline = document.getElementById('historyTimeline');
+            if (!logs || !logs.length) {
+                timeline.innerHTML = '<li style="justify-content:center; color:#64748b;">No events recorded yet.</li>';
+            } else {
+                timeline.innerHTML = logs.map(l => `
+      <li>
+        <span><strong>${l.action}</strong> (${l.performedBy || 'System'})</span>
+        <span style="color: #64748b;">${new Date(l.timestamp).toLocaleString('en-GB')}</span>
+      </li>
+    `).join('');
+            }
+            document.getElementById('historyModal').classList.add('active');
+        }
+
+        function closeModal() {
+            document.getElementById('historyModal').classList.remove('active');
+        }
+
+        document.getElementById('search').addEventListener('input', render);
+
+        document.getElementById('addForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            await fetch('/api/assets', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    name: document.getElementById('name').value,
+                    serialNumber: document.getElementById('serial').value,
+                    category: document.getElementById('category').value,
+                    purchaseCost: parseFloat(document.getElementById('cost').value)
+                })
+            });
+            e.target.reset();
+            loadAssets();
+        });
 
         loadAssets();
     </script>
