@@ -10,99 +10,102 @@ namespace TrackFlow.Tests;
 
 public class AssetsControllerTests
 {
-    private AppDbContext CreateDbContext()
+    private AppDbContext CreateInMemoryDbContext()
     {
         var options = new DbContextOptionsBuilder<AppDbContext>()
             .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString())
             .Options;
 
-        return new AppDbContext(options);
+        var context = new AppDbContext(options);
+        context.Database.EnsureCreated();
+        return context;
     }
 
     [Fact]
-    public async Task GetAll_WhenNoAssetsExist_ReturnsEmptyList()
+    public async Task GetAssets_ReturnsAllAssets()
     {
-        var context = CreateDbContext();
+        using var context = CreateInMemoryDbContext();
+        context.Assets.Add(new Asset { Name = "Test Laptop", SerialNumber = "TL-01", Category = "Laptop", PurchaseCost = 1000m });
+        context.Assets.Add(new Asset { Name = "Test Monitor", SerialNumber = "TM-01", Category = "Monitor", PurchaseCost = 300m });
+        await context.SaveChangesAsync();
+
         var controller = new AssetsController(context);
 
-        var result = await controller.GetAll();
+        var result = await controller.GetAssets();
 
-        var okResult = Assert.IsType<OkObjectResult>(result.Result);
-        var assets = Assert.IsAssignableFrom<IEnumerable<Asset>>(okResult.Value);
-        Assert.Empty(assets);
+        Assert.Equal(2, result.Value?.Count());
     }
 
     [Fact]
-    public async Task Create_ValidAsset_PersistsAndReturnsCreated()
+    public async Task CreateAsset_AddsAssetAndHistoryLog()
     {
-        var context = CreateDbContext();
+        using var context = CreateInMemoryDbContext();
         var controller = new AssetsController(context);
         var dto = new CreateAssetDto
         {
-            Name = "Dell Monitor 24",
-            SerialNumber = "DL-1002",
-            Category = "Monitor",
-            PurchaseCost = 189.99m,
-            IsAssigned = false,
-            AssignedTo = null
+            Name = "Dell XPS",
+            SerialNumber = "DX-999",
+            Category = "Laptop",
+            PurchaseCost = 1200m
         };
 
-        var result = await controller.Create(dto);
+        var result = await controller.CreateAsset(dto);
 
         var createdResult = Assert.IsType<CreatedAtActionResult>(result.Result);
-        var returnedAsset = Assert.IsType<Asset>(createdResult.Value);
-
-        Assert.Equal("Dell Monitor 24", returnedAsset.Name);
-        Assert.Equal(1, await context.Assets.CountAsync());
+        var asset = Assert.IsType<Asset>(createdResult.Value);
+        Assert.Equal("Dell XPS", asset.Name);
+        Assert.Single(context.AssetHistories);
+        Assert.Equal("Created", context.AssetHistories.First().Action);
     }
 
     [Fact]
-    public async Task Assign_WhenAlreadyAssigned_ReturnsConflict()
+    public async Task AssignAsset_ReturnsConflict_WhenAlreadyAssigned()
     {
-        var context = CreateDbContext();
+        using var context = CreateInMemoryDbContext();
         var asset = new Asset
         {
-            Name = "MacBook Pro",
-            SerialNumber = "MB-001",
+            Name = "Booked Device",
+            SerialNumber = "BK-123",
             Category = "Laptop",
-            PurchaseCost = 2000m,
+            PurchaseCost = 800m,
             IsAssigned = true,
-            AssignedTo = "John Doe"
+            AssignedTo = "Existing User"
         };
         context.Assets.Add(asset);
         await context.SaveChangesAsync();
 
         var controller = new AssetsController(context);
-        var dto = new AssignAssetDto { AssignedTo = "Jane Smith" };
+        var dto = new AssignAssetDto { AssignedTo = "New User" };
 
-        var result = await controller.Assign(asset.Id, dto);
+        var result = await controller.AssignAsset(asset.Id, dto);
 
         Assert.IsType<ConflictObjectResult>(result);
     }
 
     [Fact]
-    public async Task Return_WhenAssigned_ClearsAssignment()
+    public async Task ReturnAsset_ClearsAssignmentAndLogsHistory()
     {
-        var context = CreateDbContext();
+        using var context = CreateInMemoryDbContext();
         var asset = new Asset
         {
-            Name = "Monitor 4K",
-            SerialNumber = "MN-550",
-            Category = "Monitor",
-            PurchaseCost = 400m,
+            Name = "Returnable Device",
+            SerialNumber = "RT-456",
+            Category = "Laptop",
+            PurchaseCost = 900m,
             IsAssigned = true,
-            AssignedTo = "John Doe"
+            AssignedTo = "Someone"
         };
         context.Assets.Add(asset);
         await context.SaveChangesAsync();
 
         var controller = new AssetsController(context);
 
-        var result = await controller.Return(asset.Id);
+        var result = await controller.ReturnAsset(asset.Id);
 
         var okResult = Assert.IsType<OkObjectResult>(result);
-        var updated = Assert.IsType<Asset>(okResult.Value);
-        Assert.False(updated.IsAssigned);
-        Assert.Null(updated.AssignedTo);
+        var updatedAsset = Assert.IsType<Asset>(okResult.Value);
+        Assert.False(updatedAsset.IsAssigned);
+        Assert.Null(updatedAsset.AssignedTo);
+        Assert.Contains(context.AssetHistories, h => h.Action == "Returned");
     }
 }
